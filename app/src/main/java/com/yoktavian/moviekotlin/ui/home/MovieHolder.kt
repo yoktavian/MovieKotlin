@@ -7,17 +7,14 @@ import kotlinx.android.synthetic.main.grid_movies.view.*
 
 class MovieHolder(val view : View) : RecyclerView.ViewHolder(view) {
     fun setMovieImage(url : String) : MovieHolder {
-        Glide.with(view.context).load(url).into(view.movie_image)
+        Glide.with(view.context)
+                .load(String.format("http://image.tmdb.org/t/p/w185/$url"))
+                .into(view.movie_image)
         return this
     }
 
     fun setMovieTitle(title : String) : MovieHolder {
         view.movie_title.text = title
-        return this
-    }
-
-    fun setMovieGenre(genres : List<String>) : MovieHolder {
-        view.movie_genre.text = genres[0]
         return this
     }
 
@@ -32,7 +29,7 @@ class MovieHolder(val view : View) : RecyclerView.ViewHolder(view) {
     }
 
     fun setMovieRelease(release : String) : MovieHolder {
-        view.movie_release.text = release
+        view.movie_release.text = String.format("Release date : $release")
         return this
     }
 }
