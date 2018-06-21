@@ -47,7 +47,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     companion object {
-        val MOVIE_ID : String = "movie_id"
+        const val MOVIE_ID : String = "movie_id"
         fun startThisActivity(context : Context, movieId : Int) {
             context.startActivity(Intent(context, DetailMovieActivity::class.java)
                     .putExtra(MOVIE_ID, movieId))
