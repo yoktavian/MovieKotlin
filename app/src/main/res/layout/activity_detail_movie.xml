@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.DetailMovieActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="120dp">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/movie_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tint="#60000000"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
+
+            <ImageView
+                android:id="@+id/movie_poster"
+                android:layout_width="80dp"
+                android:layout_height="90dp" />
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/movie_poster"
+                android:layout_marginLeft="4dp"
+                android:text="Infinity War War War"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/movie_studios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/movie_poster"
+                android:layout_below="@+id/movie_title"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:text="Marvel Studios"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/movie_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/movie_poster"
+                android:layout_below="@+id/movie_studios"
+                android:layout_marginLeft="4dp"
+                android:text="Released at 2018-09-02"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/colorYellow" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>

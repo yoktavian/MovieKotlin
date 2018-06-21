@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.Movie
+import com.yoktavian.moviekotlin.ui.detail.DetailMovieActivity
 
 class MovieAdapter(private val movies: ArrayList<Movie>) : Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -25,6 +26,10 @@ class MovieAdapter(private val movies: ArrayList<Movie>) : Adapter<RecyclerView.
                     .setMovieOverview(movie.overview)
                     .setMovieVote(movie.vote_average)
                     .setMovieRelease(movie.release_date)
+
+            holder.itemView.setOnClickListener {
+                DetailMovieActivity.startThisActivity(holder.itemView.context, movie.id)
+            }
         }
     }
 }

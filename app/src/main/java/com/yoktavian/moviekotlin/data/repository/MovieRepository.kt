@@ -7,7 +7,7 @@ import com.yoktavian.moviekotlin.remote.response.MovieResponse
 import io.reactivex.Observable
 import io.reactivex.functions.Function
 
-class MoviesNowPlayingRepo : InterfaceMovie {
+class MovieRepository : InterfaceMovie {
 
     private val apiClient: ApiClient = ApiService.create()
     private val language : String = "en-US"

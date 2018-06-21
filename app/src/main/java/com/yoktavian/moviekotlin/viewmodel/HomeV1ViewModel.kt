@@ -3,8 +3,7 @@ package com.yoktavian.moviekotlin.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
-import com.yoktavian.moviekotlin.data.repository.MoviesNowPlayingRepo
+import com.yoktavian.moviekotlin.data.repository.MovieRepository
 import com.yoktavian.moviekotlin.remote.response.MovieResponse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,7 +15,7 @@ class HomeV1ViewModel : ViewModel() {
     enum class StateOfView {
         LOADING, SERVER_ERROR, INTERNET_ERROR, SUCCESS
     }
-    private val movieRepo : MoviesNowPlayingRepo = MoviesNowPlayingRepo()
+    private val movieRepo : MovieRepository = MovieRepository()
     private val disposable : Disposable? = null
     private val movies : MutableLiveData<MovieResponse> = MutableLiveData()
     private var moviesResponse : Observable<MovieResponse>? = null
