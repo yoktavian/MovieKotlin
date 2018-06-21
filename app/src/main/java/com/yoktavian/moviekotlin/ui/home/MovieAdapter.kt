@@ -1,6 +1,5 @@
 package com.yoktavian.moviekotlin.ui.home
 
-import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
