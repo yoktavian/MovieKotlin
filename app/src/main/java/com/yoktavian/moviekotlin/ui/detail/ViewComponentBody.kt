@@ -1,7 +1,9 @@
 package com.yoktavian.moviekotlin.ui.detail
 
+import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.CheckBox
+import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.Genres
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 
@@ -17,6 +19,7 @@ class ViewComponentBody(private val activity: DetailMovieActivity) {
             val genreCheckbox = CheckBox(activity)
             genreCheckbox.text = genre.name
             genreCheckbox.isChecked = true
+            genreCheckbox.setTextColor(ContextCompat.getColor(activity, R.color.colorDarkGrey))
             container.addView(genreCheckbox)
         }
         return this
