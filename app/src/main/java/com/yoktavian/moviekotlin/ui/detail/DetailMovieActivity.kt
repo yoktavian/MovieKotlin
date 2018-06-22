@@ -86,7 +86,7 @@ class DetailMovieActivity : AppCompatActivity() {
             viewComponentHeader.setMovieBackDrop(it!!.backdrop_path)
                     .setMoviePoster(it.poster_path)
                     .setMovieTitle(it.title)
-                    .setMovieStudios(it.production_companies[0].name)
+                    .setMovieStudios(it.production_companies)
 
             viewComponentBody.setMovieOverview(it.overview)
                     .setMovieGenres(it.genres)
@@ -108,7 +108,7 @@ class DetailMovieActivity : AppCompatActivity() {
                 StateOfView.SUCCESS -> stopLoading(false, null)
                 StateOfView.INTERNET_ERROR -> stopLoading(true, "Check your internet connection")
                 else -> {
-                    stopLoading(true, "Server error.")
+                    stopLoading(true, "Something Wrong.")
                 }
             }
         })

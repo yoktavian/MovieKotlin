@@ -71,7 +71,7 @@ class HomeV1Activity : AppCompatActivity() {
             StateOfView.INTERNET_ERROR -> loading
                     .stopLoadingWithError("Check your internet connection")
             else -> {
-                loading.stopLoadingWithError("Server error.")
+                loading.stopLoadingWithError("Something Wrong.")
             }
         }
 

@@ -1,6 +1,7 @@
 package com.yoktavian.moviekotlin.ui.detail
 
 import com.bumptech.glide.Glide
+import com.yoktavian.moviekotlin.data.model.Production
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 
 class ViewComponentHeader(private val activity: DetailMovieActivity) {
@@ -25,8 +26,10 @@ class ViewComponentHeader(private val activity: DetailMovieActivity) {
         return this
     }
 
-    fun setMovieStudios(studio : String) : ViewComponentHeader {
-        activity.movie_studios.text = studio
+    fun setMovieStudios(studios : List<Production>) : ViewComponentHeader {
+        when {
+            studios.isNotEmpty() -> activity.movie_studios.text = studios[0].name
+        }
         return this
     }
 }

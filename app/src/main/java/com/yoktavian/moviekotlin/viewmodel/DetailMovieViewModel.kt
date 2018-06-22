@@ -7,7 +7,6 @@ import android.util.Log
 import com.yoktavian.moviekotlin.data.model.DetailMovie
 import com.yoktavian.moviekotlin.data.model.Movie
 import com.yoktavian.moviekotlin.data.repository.MovieRepository
-import com.yoktavian.moviekotlin.remote.response.MovieResponse
 import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -35,7 +34,7 @@ class DetailMovieViewModel : ViewModel() {
                     if (error is HttpException || error is IOException)
                         setState(StateOfView.INTERNET_ERROR)
                     else
-                        setState(StateOfView.SERVER_ERROR)
+                        setState(StateOfView.SOMETHING_ERROR)
                 })
 
         return movie

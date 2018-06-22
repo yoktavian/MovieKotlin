@@ -13,7 +13,7 @@ import java.io.IOException
 
 class HomeV1ViewModel : ViewModel() {
     enum class StateOfView {
-        LOADING, SERVER_ERROR, INTERNET_ERROR, SUCCESS
+        LOADING, SOMETHING_ERROR, INTERNET_ERROR, SUCCESS
     }
     private val movieRepo : MovieRepository = MovieRepository()
     private var disposable : Disposable? = null
@@ -33,7 +33,7 @@ class HomeV1ViewModel : ViewModel() {
                     if (error is HttpException || error is IOException)
                         setState(StateOfView.INTERNET_ERROR)
                     else
-                        setState(StateOfView.SERVER_ERROR)
+                        setState(StateOfView.SOMETHING_ERROR)
                 })
 
         return movies
