@@ -4,12 +4,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.yoktavian.moviekotlin.data.model.DetailMovie
-import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import com.yoktavian.moviekotlin.data.repository.MovieRepository
+import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
+import java.io.IOException
 
 class DetailMovieViewModel : ViewModel() {
     private val stateOfView : MutableLiveData<StateOfView> = MutableLiveData()
@@ -26,8 +27,8 @@ class DetailMovieViewModel : ViewModel() {
                     result -> movie.value = result
                     setState(StateOfView.SUCCESS)
                 }, {
-                    error -> error.localizedMessage
-                    if (error is HttpException)
+                    error ->
+                    if (error is HttpException || error is IOException)
                         setState(StateOfView.INTERNET_ERROR)
                     else
                         setState(StateOfView.SERVER_ERROR)

@@ -9,22 +9,20 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.DetailMovie
-import com.yoktavian.moviekotlin.data.model.Production
 import com.yoktavian.moviekotlin.viewmodel.DetailMovieViewModel
+import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import kotlinx.android.synthetic.main.activity_detail_movie.*
-import java.lang.Exception
+import org.jetbrains.annotations.Nullable
 
 class DetailMovieActivity : AppCompatActivity() {
 
     private lateinit var viewModel : DetailMovieViewModel
     private lateinit var movie : LiveData<DetailMovie>
     private lateinit var viewComponentHeader: ViewComponentHeader
+    private lateinit var viewComponentBody: ViewComponentBody
+    private var movieId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +30,11 @@ class DetailMovieActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = "Movie Detail"
         viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel::class.java)
-        viewComponentHeader = ViewComponentHeader(this)
+        initializeComponent()
+        observeStateOfView()
         // subscribe movie based on id get from intent.
-        subscribeMovie(intent.getIntExtra(MOVIE_ID, 0))
+        movieId = intent!!.getIntExtra(MOVIE_ID, 0)
+        subscribeToGetMovieDetail()
         observeMovie()
     }
 
@@ -53,7 +53,12 @@ class DetailMovieActivity : AppCompatActivity() {
         }
     }
 
-    private fun subscribeMovie(movieId : Int) {
+    private fun initializeComponent() {
+        viewComponentHeader = ViewComponentHeader(this)
+        viewComponentBody = ViewComponentBody(this)
+    }
+
+    private fun subscribeToGetMovieDetail() {
         movie = viewModel.getDetailMovie(movieId)
     }
 
@@ -62,47 +67,39 @@ class DetailMovieActivity : AppCompatActivity() {
             viewComponentHeader.setMovieBackDrop(it!!.backdrop_path)
                     .setMoviePoster(it.poster_path)
                     .setMovieTitle(it.title)
-                    .setMovieStudios(it.production_companies)
+                    .setMovieStudios(it.production_companies[0].name)
+
+            viewComponentBody.setMovieOverview(it.overview)
+                    .setMovieGenres(it.genres)
+                    .setAverageVote(it.vote_average)
         })
     }
 
-    class ViewComponentHeader(private val activity: DetailMovieActivity) {
-        fun setMovieBackDrop(url_backdrop : String) : ViewComponentHeader {
-            Glide.with(activity)
-                    .load(String.format("https://image.tmdb.org/t/p/w1400_and_h450_face/$url_backdrop"))
-                    .listener(object : RequestListener<String, GlideDrawable> {
-                        override fun onException(e: Exception?, model: String?,
-                            target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
-                            return false
-                        }
+    private fun observeStateOfView() {
+        viewModel.getState().observe(this, Observer {
+            when(it) {
+                StateOfView.LOADING -> startLoading()
+                StateOfView.SUCCESS -> stopLoading(false, null)
+                StateOfView.INTERNET_ERROR -> stopLoading(true, "Check your internet connection")
+                else -> {
+                    stopLoading(true, "Server error.")
+                }
+            }
+        })
+    }
 
-                        override fun onResourceReady(resource: GlideDrawable?,
-                            model: String?, target: Target<GlideDrawable>?,
-                            isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                            activity.backdrop_loading.visibility = View.GONE
-                            return false
-                        }
+    private fun startLoading() {
+        loading.startLoading()
+    }
 
-                    })
-                    .into(activity.movie_backdrop)
-            return this
-        }
-
-        fun setMoviePoster(url_poster : String) : ViewComponentHeader {
-            Glide.with(activity)
-                    .load(String.format("https://image.tmdb.org/t/p/w300_and_h450_bestv2/$url_poster"))
-                    .into(activity.movie_poster)
-            return this
-        }
-
-        fun setMovieTitle(title : String) : ViewComponentHeader {
-            activity.movie_title.text = title
-            return this
-        }
-
-        fun setMovieStudios(studios : List<Production>) : ViewComponentHeader {
-            activity.movie_studios.text = studios[0].name
-            return this
+    private fun stopLoading(error : Boolean, @Nullable errorMessage : String?) {
+        if (error) {
+            loading.stopLoadingWithError(errorMessage!!)
+            loading.setReloadClickListener(View.OnClickListener {
+                subscribeToGetMovieDetail()
+            })
+        } else {
+            loading.stopLoading()
         }
     }
 }

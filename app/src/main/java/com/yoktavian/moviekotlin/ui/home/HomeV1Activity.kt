@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
 import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.Movie
 import com.yoktavian.moviekotlin.remote.response.MovieResponse
@@ -30,7 +29,7 @@ class HomeV1Activity : AppCompatActivity() {
         movieAdapter = MovieAdapter(movies)
         list_movies.adapter = movieAdapter
         observeView()
-        subscribeMovies()
+        subscribeToGetMovies()
         observeMovies()
     }
 
@@ -55,28 +54,29 @@ class HomeV1Activity : AppCompatActivity() {
         })
     }
 
-    private fun subscribeMovies() {
+    private fun subscribeToGetMovies() {
         moviesResponse = viewModel.getMovieNowPlaying(currentPage)
     }
 
     private fun startLoading() {
-        loading.visibility = View.VISIBLE
+        loading.startLoading()
     }
 
     private fun stopLoading() {
-        loading.visibility = View.GONE
+        loading.stopLoading()
     }
 
     private fun stopLoadingWithError(state : StateOfView) {
         when (state) {
-            StateOfView.INTERNET_ERROR -> showAlert("Check your internet connection")
+            StateOfView.INTERNET_ERROR -> loading
+                    .stopLoadingWithError("Check your internet connection")
             else -> {
-                showAlert("Server error.")
+                loading.stopLoadingWithError("Server error.")
             }
         }
-    }
 
-    private fun showAlert(message : String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        loading.setReloadClickListener(View.OnClickListener {
+            subscribeToGetMovies()
+        })
     }
 }

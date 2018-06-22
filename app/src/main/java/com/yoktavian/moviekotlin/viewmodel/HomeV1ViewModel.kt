@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
+import java.io.IOException
 
 class HomeV1ViewModel : ViewModel() {
     enum class StateOfView {
@@ -28,8 +29,8 @@ class HomeV1ViewModel : ViewModel() {
                     result -> movies.value = result
                     setState(StateOfView.SUCCESS)
                 }, {
-                    error -> error.message
-                    if (error is HttpException)
+                    error ->
+                    if (error is HttpException || error is IOException)
                         setState(StateOfView.INTERNET_ERROR)
                     else
                         setState(StateOfView.SERVER_ERROR)
