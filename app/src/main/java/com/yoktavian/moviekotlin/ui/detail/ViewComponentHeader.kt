@@ -4,10 +4,12 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 
 class ViewComponentHeader(private val activity: DetailMovieActivity) {
-    fun setMovieBackDrop(url_backdrop : String) : ViewComponentHeader {
-        Glide.with(activity)
-                .load(String.format("https://image.tmdb.org/t/p/w1400_and_h450_face/$url_backdrop"))
-                .into(activity.movie_backdrop)
+    fun setMovieBackDrop(url_backdrop : String?) : ViewComponentHeader {
+        if (url_backdrop != null) {
+            Glide.with(activity)
+                    .load(String.format("https://image.tmdb.org/t/p/w1400_and_h450_face/$url_backdrop"))
+                    .into(activity.movie_backdrop)
+        }
         return this
     }
 

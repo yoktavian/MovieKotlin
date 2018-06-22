@@ -3,8 +3,11 @@ package com.yoktavian.moviekotlin.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.yoktavian.moviekotlin.data.model.DetailMovie
+import com.yoktavian.moviekotlin.data.model.Movie
 import com.yoktavian.moviekotlin.data.repository.MovieRepository
+import com.yoktavian.moviekotlin.remote.response.MovieResponse
 import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,6 +19,7 @@ class DetailMovieViewModel : ViewModel() {
     private val stateOfView : MutableLiveData<StateOfView> = MutableLiveData()
     private val movieRepo : MovieRepository = MovieRepository()
     private val movie : MutableLiveData<DetailMovie> = MutableLiveData()
+    private val similiarMovies : MutableLiveData<List<Movie>> = MutableLiveData()
     private var disposable : Disposable? = null
 
     fun getDetailMovie(movieId : Int) : LiveData<DetailMovie> {
@@ -35,6 +39,20 @@ class DetailMovieViewModel : ViewModel() {
                 })
 
         return movie
+    }
+
+    fun getSimiliarMovie(movieId: Int) : LiveData<List<Movie>> {
+        disposable = movieRepo.getSimiliarMovies(movieId, 1) // 1 is page.
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result -> similiarMovies.value = result.results
+                }, {
+                    error ->
+                    Log.d("=>Error", error.message)
+                })
+
+        return similiarMovies
     }
 
     private fun setState(state : StateOfView) {

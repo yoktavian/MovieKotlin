@@ -10,7 +10,8 @@
     <com.yoktavian.moviekotlin.ui.widget.LoadingWidget
         android:id="@+id/loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -68,13 +69,13 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:padding="4dp">
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -107,12 +108,18 @@
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
-            <LinearLayout
-                android:id="@+id/genre_container"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"/>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/genre_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"/>
+
+            </HorizontalScrollView>
 
             <View
                 android:layout_width="match_parent"
@@ -154,11 +161,15 @@
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/grid_similiar_movies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/grid_similiar_movies"/>
 
         </LinearLayout>
 

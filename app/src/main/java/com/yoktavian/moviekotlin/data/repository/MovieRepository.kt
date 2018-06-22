@@ -9,11 +9,21 @@ import io.reactivex.Observable
 import io.reactivex.functions.Function
 
 class MovieRepository : InterfaceMovie {
+
     private val apiClient: ApiClient = ApiService.create()
     private val language : String = "en-US"
 
-    override fun getMoviesNowPlaying(page : Int): Observable<MovieResponse> {
+    override fun getMovies(page : Int): Observable<MovieResponse> {
         val observable : Observable<MovieResponse> = apiClient.getMovieNowPlaying(
+                BuildConfig.API_KEY_MOVIE, language, page)
+
+        return observable.flatMap(Function<MovieResponse, Observable<MovieResponse>> {
+            return@Function Observable.just(it)
+        })
+    }
+
+    override fun getSimiliarMovies(movieId: Int, page : Int): Observable<MovieResponse> {
+        val observable : Observable<MovieResponse> = apiClient.getSimiliarMovies(movieId,
                 BuildConfig.API_KEY_MOVIE, language, page)
 
         return observable.flatMap(Function<MovieResponse, Observable<MovieResponse>> {

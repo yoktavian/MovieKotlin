@@ -5,6 +5,7 @@ import com.yoktavian.moviekotlin.remote.response.MovieResponse
 import io.reactivex.Observable
 
 interface InterfaceMovie {
-    fun getMoviesNowPlaying(page : Int) : Observable<MovieResponse>
+    fun getMovies(page : Int) : Observable<MovieResponse>
+    fun getSimiliarMovies(movieId: Int, page : Int) : Observable<MovieResponse>
     fun getDetailMovie(movieId : Int) : Observable<DetailMovie>
 }

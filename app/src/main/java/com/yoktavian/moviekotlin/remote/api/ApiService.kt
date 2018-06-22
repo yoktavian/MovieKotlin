@@ -7,13 +7,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiService {
     companion object {
         fun create() : ApiClient {
-            val retrofit = Retrofit
-                    .Builder()
-                    .baseUrl("https://api.themoviedb.org")
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-            return retrofit.create(ApiClient::class.java)
+            val apiClient : ApiClient by lazy {
+                val retrofit = Retrofit
+                        .Builder()
+                        .baseUrl("https://api.themoviedb.org")
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+
+                retrofit.create(ApiClient::class.java)
+            }
+            return apiClient
         }
     }
 }

@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.DetailMovie
+import com.yoktavian.moviekotlin.data.model.Movie
 import com.yoktavian.moviekotlin.viewmodel.DetailMovieViewModel
 import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import kotlinx.android.synthetic.main.activity_detail_movie.*
@@ -20,9 +21,12 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private lateinit var viewModel : DetailMovieViewModel
     private lateinit var movie : LiveData<DetailMovie>
+    private lateinit var similiarMovies : LiveData<List<Movie>>
+    private lateinit var similiarMovieList : ArrayList<Movie>
     private lateinit var viewComponentHeader: ViewComponentHeader
     private lateinit var viewComponentBody: ViewComponentBody
     private var movieId : Int = 0
+    private lateinit var adapter: SimiliarMovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +34,16 @@ class DetailMovieActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = "Movie Detail"
         viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel::class.java)
+        initializeSimiliarMovie()
         initializeComponent()
         observeStateOfView()
+
         // subscribe movie based on id get from intent.
         movieId = intent!!.getIntExtra(MOVIE_ID, 0)
         subscribeToGetMovieDetail()
         observeMovie()
+        subscribeToGetSimiliarMovie()
+        observeSimiliarMovie()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -53,6 +61,13 @@ class DetailMovieActivity : AppCompatActivity() {
         }
     }
 
+    private fun initializeSimiliarMovie() {
+        similiarMovieList = ArrayList()
+        grid_similiar_movies.hasFixedSize()
+        adapter = SimiliarMovieAdapter(similiarMovieList)
+        grid_similiar_movies.adapter = adapter
+    }
+
     private fun initializeComponent() {
         viewComponentHeader = ViewComponentHeader(this)
         viewComponentBody = ViewComponentBody(this)
@@ -60,6 +75,10 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private fun subscribeToGetMovieDetail() {
         movie = viewModel.getDetailMovie(movieId)
+    }
+
+    private fun subscribeToGetSimiliarMovie() {
+        similiarMovies = viewModel.getSimiliarMovie(movieId)
     }
 
     private fun observeMovie() {
@@ -72,6 +91,13 @@ class DetailMovieActivity : AppCompatActivity() {
             viewComponentBody.setMovieOverview(it.overview)
                     .setMovieGenres(it.genres)
                     .setAverageVote(it.vote_average)
+        })
+    }
+
+    private fun observeSimiliarMovie() {
+        similiarMovies.observe(this, Observer {
+            similiarMovieList.addAll(it!!)
+            adapter.notifyDataSetChanged()
         })
     }
 

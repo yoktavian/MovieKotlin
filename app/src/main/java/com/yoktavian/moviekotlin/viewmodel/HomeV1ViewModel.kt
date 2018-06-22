@@ -23,7 +23,7 @@ class HomeV1ViewModel : ViewModel() {
 
     fun getMovieNowPlaying(page : Int) : LiveData<MovieResponse> {
         setState(StateOfView.LOADING)
-        disposable = movieRepo.getMoviesNowPlaying(page).subscribeOn(Schedulers.io())
+        disposable = movieRepo.getMovies(page).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result -> movies.value = result
