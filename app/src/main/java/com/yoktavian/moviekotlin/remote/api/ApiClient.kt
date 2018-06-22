@@ -14,6 +14,12 @@ interface ApiClient {
                            @Query("language") language : String,
                            @Query("page") page : Int) : Observable<MovieResponse>
 
+    @GET("/3/movie/{movie_id}/similar")
+    fun getSimiliarMovies(@Path("movie_id") movieId: Int,
+                          @Query("api_key") api_key : String,
+                          @Query("language") language : String,
+                          @Query("page") page : Int) : Observable<MovieResponse>
+
     @GET("/3/movie/{id}")
     fun getDetailMovie(@Path("id") movieId : Int,
                        @Query("api_key") api_key: String,
