@@ -18,7 +18,7 @@ class DetailMovieViewModel : ViewModel() {
     private val stateOfView : MutableLiveData<StateOfView> = MutableLiveData()
     private val movieRepo : MovieRepository = MovieRepository()
     private val movie : MutableLiveData<DetailMovie> = MutableLiveData()
-    private val similiarMovies : MutableLiveData<List<Movie>> = MutableLiveData()
+    private val similarMovies : MutableLiveData<List<Movie>> = MutableLiveData()
     private var disposable : Disposable? = null
 
     fun getDetailMovie(movieId : Int) : LiveData<DetailMovie> {
@@ -45,13 +45,13 @@ class DetailMovieViewModel : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    result -> similiarMovies.value = result.results
+                    result -> similarMovies.value = result.results
                 }, {
                     error ->
                     Log.d("=>Error", error.message)
                 })
 
-        return similiarMovies
+        return similarMovies
     }
 
     private fun setState(state : StateOfView) {
