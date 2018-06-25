@@ -21,20 +21,20 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private lateinit var viewModel : DetailMovieViewModel
     private lateinit var movie : LiveData<DetailMovie>
-    private lateinit var similiarMovies : LiveData<List<Movie>>
-    private lateinit var similiarMovieList : ArrayList<Movie>
+    private lateinit var similarMovies : LiveData<List<Movie>>
+    private lateinit var similarMovieList : ArrayList<Movie>
     private lateinit var viewComponentHeader: ViewComponentHeader
     private lateinit var viewComponentBody: ViewComponentBody
     private var movieId : Int = 0
-    private lateinit var adapter: SimiliarMovieAdapter
+    private lateinit var adapter: SimilarMovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_movie)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = "Movie Detail"
+        supportActionBar!!.title = "Details"
         viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel::class.java)
-        initializeSimiliarMovie()
+        initializeSimilarMovie()
         initializeComponent()
         observeStateOfView()
 
@@ -42,8 +42,8 @@ class DetailMovieActivity : AppCompatActivity() {
         movieId = intent!!.getIntExtra(MOVIE_ID, 0)
         subscribeToGetMovieDetail()
         observeMovie()
-        subscribeToGetSimiliarMovie()
-        observeSimiliarMovie()
+        subscribeToGetSimilarMovie()
+        observeSimilarMovie()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -61,10 +61,10 @@ class DetailMovieActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeSimiliarMovie() {
-        similiarMovieList = ArrayList()
+    private fun initializeSimilarMovie() {
+        similarMovieList = ArrayList()
         grid_similiar_movies.hasFixedSize()
-        adapter = SimiliarMovieAdapter(similiarMovieList)
+        adapter = SimilarMovieAdapter(similarMovieList)
         grid_similiar_movies.adapter = adapter
     }
 
@@ -77,8 +77,8 @@ class DetailMovieActivity : AppCompatActivity() {
         movie = viewModel.getDetailMovie(movieId)
     }
 
-    private fun subscribeToGetSimiliarMovie() {
-        similiarMovies = viewModel.getSimiliarMovie(movieId)
+    private fun subscribeToGetSimilarMovie() {
+        similarMovies = viewModel.getSimiliarMovie(movieId)
     }
 
     private fun observeMovie() {
@@ -94,9 +94,9 @@ class DetailMovieActivity : AppCompatActivity() {
         })
     }
 
-    private fun observeSimiliarMovie() {
-        similiarMovies.observe(this, Observer {
-            similiarMovieList.addAll(it!!)
+    private fun observeSimilarMovie() {
+        similarMovies.observe(this, Observer {
+            similarMovieList.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
     }

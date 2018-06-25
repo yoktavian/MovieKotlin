@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import com.yoktavian.moviekotlin.R
 import com.yoktavian.moviekotlin.data.model.Movie
 
-class SimiliarMovieAdapter(val movies : ArrayList<Movie>) :
-    RecyclerView.Adapter<SimiliarMovieHolder>() {
+class SimilarMovieAdapter(private val movies : ArrayList<Movie>) :
+    RecyclerView.Adapter<SimilarMovieHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimiliarMovieHolder {
-        return SimiliarMovieHolder(LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimilarMovieHolder {
+        return SimilarMovieHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.grid_similiar_movies, parent, false))
     }
 
@@ -19,7 +19,7 @@ class SimiliarMovieAdapter(val movies : ArrayList<Movie>) :
         return movies.size
     }
 
-    override fun onBindViewHolder(holder: SimiliarMovieHolder, position: Int) {
+    override fun onBindViewHolder(holder: SimilarMovieHolder, position: Int) {
         val movie = movies[position]
         holder.setMovieBackdrop(movie.backdrop_path)
                 .setMovieTitle(movie.title)

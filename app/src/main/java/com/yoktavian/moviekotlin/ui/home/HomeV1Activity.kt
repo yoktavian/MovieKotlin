@@ -24,6 +24,7 @@ class HomeV1Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_v1)
+        supportActionBar!!.title = "Now Playing"
         viewModel = ViewModelProviders.of(this).get(HomeV1ViewModel::class.java)
         list_movies.hasFixedSize()
         movieAdapter = MovieAdapter(movies)
