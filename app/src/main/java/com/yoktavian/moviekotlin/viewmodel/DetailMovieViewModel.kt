@@ -9,6 +9,7 @@ import com.yoktavian.moviekotlin.data.model.Movie
 import com.yoktavian.moviekotlin.data.repository.MovieRepository
 import com.yoktavian.moviekotlin.viewmodel.HomeV1ViewModel.StateOfView
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
@@ -20,6 +21,7 @@ class DetailMovieViewModel : ViewModel() {
     private val movie : MutableLiveData<DetailMovie> = MutableLiveData()
     private val similarMovies : MutableLiveData<List<Movie>> = MutableLiveData()
     private var disposable : Disposable? = null
+    private val compositeDisposable = CompositeDisposable()
 
     fun getDetailMovie(movieId : Int) : LiveData<DetailMovie> {
         setState(StateOfView.LOADING)
@@ -37,19 +39,24 @@ class DetailMovieViewModel : ViewModel() {
                         setState(StateOfView.SOMETHING_ERROR)
                 })
 
+        compositeDisposable.add(disposable)
+
         return movie
     }
 
-    fun getSimiliarMovie(movieId: Int) : LiveData<List<Movie>> {
+    fun getSimilarMovie(movieId: Int) : LiveData<List<Movie>> {
         disposable = movieRepo.getSimiliarMovies(movieId, 1) // 1 is page.
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     result -> similarMovies.value = result.results
+                    Log.d("=>Res", "Success 2")
                 }, {
                     error ->
                     Log.d("=>Error", error.message)
                 })
+
+        compositeDisposable.add(disposable)
 
         return similarMovies
     }
@@ -63,8 +70,8 @@ class DetailMovieViewModel : ViewModel() {
     }
 
     override fun onCleared() {
-        if (disposable != null && disposable!!.isDisposed)
-            disposable!!.dispose()
+        if (!compositeDisposable.isDisposed)
+            compositeDisposable.dispose()
         super.onCleared()
     }
 }

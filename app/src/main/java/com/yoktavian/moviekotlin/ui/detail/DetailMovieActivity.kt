@@ -78,7 +78,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     private fun subscribeToGetSimilarMovie() {
-        similarMovies = viewModel.getSimiliarMovie(movieId)
+        similarMovies = viewModel.getSimilarMovie(movieId)
     }
 
     private fun observeMovie() {
